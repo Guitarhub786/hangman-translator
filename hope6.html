@@ -1,0 +1,176 @@
+<html>
+
+<head>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+
+		.main {
+			background: #ecf0f1;
+			width: 100%;
+			height: 100%;
+			display: inline-flex;
+		}
+
+		#editor-textarea {
+			width: 100%;
+			height: 20%;
+			margin: 10px;
+			padding: 5px;
+		}
+
+		#viewer {
+			background: white;
+			border: none;
+			width: 100%;
+			height: 20%;
+			margin: 10px;
+			border: 1px solid #3498db;
+		}
+
+		#displayArabic {
+			font-size: 40px;
+			margin-top: 20px;
+			margin-left: 20px;
+		}
+
+		#displayEnglish {
+			font-size: 22px;
+			margin-left: 20px;
+		}
+
+		#displayHide {
+			color: green;
+		}
+
+		#displaySeek {
+			color: blue;
+		}
+	</style>
+	<title>Keep it REAL</title>
+</head>
+
+<body>
+	<div class="main">
+
+		<div class="container">
+
+			<!-- display questions -->
+			<h2 id="displayArabic">displayArabic</h2>
+			<h2 id="displayEnglish">displayEnglish</h2>
+			<br />
+
+			<!-- updateHide HTML -->
+			<h2 id="displayEnglishLowerCase">displayEnglishLowerCase</h2>
+			<h2 id="displayHide">displayHide</h2>
+
+			<!-- input box -->
+			<textarea id="editor-textarea" onkeyup="refresh()" placeholder="Text Here..." autofocus></textarea>
+			<h2 id="displayEditorOutput">Result</h2>
+
+			<!-- updateSeek HTML -->
+			<h2 id="displaySeek">displaySeek</h2>
+
+		</div>
+	</div>
+
+
+	<script>
+		// question Variables
+		var translationArabic = "أَهَذَا قَلَمٌ؟";
+		var translationEnglish = "Is this a pen"
+		var strEnglishLowerCase = translationEnglish.toLowerCase();
+		var strEnglish = strEnglishLowerCase;
+
+		// updateInput variable
+		var input = "";
+
+		// update Arabic English variables in DOM
+		document.getElementById("displayArabic").innerHTML = translationArabic;
+		document.getElementById("displayEnglish").innerHTML = translationEnglish;
+		document.getElementById("displayEnglishLowerCase").innerHTML = strEnglish;
+
+
+		function refresh() {
+			updateParseEnglish();
+			updateInput();
+			updateHide();
+			updateSeek();
+		}
+
+		function updateParseEnglish() {
+			// remove characters 
+			var cutQ = "";
+			// console.log("#" + strEnglish + cutQ)
+			cutQ = strEnglish.split('?').join("");
+			// console.log(cutQ)
+
+			cutX = cutQ.split('!').join("");
+			// console.log(cutX)
+
+			cutP = cutX.split('.').join("");
+			// console.log(cutP)
+
+			cutC = cutP.split(',').join("");
+			// console.log(cutC)
+
+			strEnglish = cutC;
+		}
+
+		function updateSeek() {
+			var strEnglishSplit = strEnglish.split(" ");
+			var inputSplit = input.split(" ");
+			var seek = "";
+
+			for (var check of inputSplit) {
+
+				for (var word of strEnglishSplit) {
+					if (word == check) {
+						seek += "[" + check + "]" + " ";
+					}
+				}
+			}
+
+			document.getElementById("displaySeek").innerHTML = seek;
+		}
+
+		function updateHide() {
+
+			// if input got [jack?] -target last char to make it [jack] 
+			if (input == "jack?") {
+				console.log("(((((((((((((((((found jack)))))))))))))))")
+				// input = "jack";
+				console.log("JACK NOW:" + input);
+			}
+
+			console.log("-----------==== Before ====------------------");
+			// console.log("-------English:>" + strEnglish);
+			console.log("inputBefore:", "*" + input + "*");
+			// console.log("HideBefore:>>" + hide);
+			console.log("---------------- update hide ---------------------");
+			var hide = strEnglish.split(input).join("");
+			console.log("#HideAfter:>>" + hide);
+			console.log("inputAfter:", "*" + input + "*");
+			console.log("---------------- After ---------------------");
+
+			// console.log("inputA:>-" + strEnglish);
+
+
+			if (hide == "") {
+				hide = "CORRECT!";
+			}
+
+			document.getElementById("displayHide").innerHTML = hide;
+		}
+
+		function updateInput() {
+			input = document.getElementById('editor-textarea').value;
+			input = input.toLowerCase();
+			document.getElementById("displayEditorOutput").innerHTML = input;
+		}
+	</script>
+</body>
+
+</html>
